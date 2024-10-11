@@ -74,7 +74,9 @@ public class Principal {
                 String monedaDestino = conversion.getMonedaDestino();
 
                 ConversorMonedas conversorMonedas = interactuaConApi.ObtenerConversorMonedas(monedaOrigen, monedaDestino, cantidad);
+
                 System.out.println(" ");
+
                 System.out.println("Escriba el numero de la opcion deseada: ");
 
 //    System.out.println("Resultado: "+conversorMonedas);
@@ -104,6 +106,22 @@ public class Principal {
                     return new ConversorMonedas("USD", "ARS");
                 case 2:
                     return new ConversorMonedas("ARS", "USD");
+                case 3:
+                    return new ConversorMonedas("BOB", "USD");
+                case 4:
+                    return new ConversorMonedas("USD", "BOB");
+                case 5:
+                    return new ConversorMonedas("BRL", "USD");
+                case 6:
+                    return new ConversorMonedas("USD", "BRL");
+                case 7:
+                    return new ConversorMonedas("CLP", "USD");
+                case 8:
+                    return new ConversorMonedas("USD", "CLP");
+                case 9:
+                    return new ConversorMonedas("COP", "USD");
+                case 10:
+                    return new ConversorMonedas("USD", "COP");
                 default:
                     throw new IllegalAccessException("Opcion no valida");
 
