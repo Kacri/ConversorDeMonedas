@@ -59,7 +59,7 @@ public class Principal {
             //CONTROLANDO ERROR DE INGRESO DE DATO Q NO CORRESPONDE
             try {
                 opcion = teclado.nextInt();
-            }catch (InputMismatchException e){
+            } catch (InputMismatchException e) {
                 System.out.println("Error debe ingresar una opcion valida");
                 //limpia buffer
                 teclado.next();
@@ -68,39 +68,27 @@ public class Principal {
             }
 
 
-
-
-
-
-
-
-
-
             if (opcion == 12) {
                 System.out.println("Saliendo del programa...");
-            }else {
+            } else {
                 try {
                     ConversorMonedas conversion = ReselectionOption.reselectionMoaned(opcion);
                     String monedaOrigen = conversion.getMonedaOrigen();
                     String monedaDestino = conversion.getMonedaDestino();
 
                     boolean cantidadValida = false;
-                    while (!cantidadValida){
+                    while (!cantidadValida) {
                         System.out.println("Ingrese el valor que deseas convertir: ");
                         try {
                             cantidad = teclado.nextDouble();
                             //salir del bucle
                             cantidadValida = true;
-                        }catch (InputMismatchException e){
+                        } catch (InputMismatchException e) {
                             System.out.println("Debe ingresar solo Numeros enteros o decimales. ");
                             teclado.next();
                         }
 
                     }
-
-
-
-
                     conversion = interactuaConApi.ObtenerConversorMonedas(monedaOrigen, monedaDestino, cantidad);
                     conversion.setCantidad(cantidad);
                     System.out.println(" ");
@@ -114,16 +102,13 @@ public class Principal {
                 }
             }
         }
-                    GeneradorDeArchivo generadorDeArchivo = new GeneradorDeArchivo();
+        GeneradorDeArchivo generadorDeArchivo = new GeneradorDeArchivo();
         try {
             generadorDeArchivo.guardarJson(convertiendomonedas);
             System.out.println("Se guardo el archivo JSON con las conversiones");
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error al guardar el archivo JSON.");
         }
-
-
-
 
 
     }
