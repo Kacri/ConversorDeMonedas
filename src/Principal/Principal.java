@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,8 +21,7 @@ public class Principal {
         double cantidad = 0;
 
         List<ConversorMonedas> convertiendomonedas = new ArrayList<>();
-
-
+        //List<ConversorMonedas> convertiendomonedas = new ArrayList<>();
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
                 .setPrettyPrinting()
@@ -48,64 +48,88 @@ public class Principal {
                 11) Sol Peruano =>> Dólar
                 12) Salir
                 """;
-
-
         int opcion = 0;
 
         while (opcion != 12) {
-
             System.out.println(menuOpciones);
             System.out.println("Escriba el numero de la opcion deseada: ");
             System.out.println("-------------------------------------------");
-            opcion = teclado.nextInt();
+
+
+            //CONTROLANDO ERROR DE INGRESO DE DATO Q NO CORRESPONDE
+            try {
+                opcion = teclado.nextInt();
+            }catch (InputMismatchException e){
+                System.out.println("Error debe ingresar una opcion valida");
+                //limpia buffer
+                teclado.next();
+                //regresa al inicio del ciclo
+                continue;
+            }
+
+
+
+
+
+
+
+
+
 
             if (opcion == 12) {
                 System.out.println("Saliendo del programa...");
-            }
+            }else {
+                try {
+                    ConversorMonedas conversion = ReselectionOption.reselectionMoaned(opcion);
+                    String monedaOrigen = conversion.getMonedaOrigen();
+                    String monedaDestino = conversion.getMonedaDestino();
+
+                    boolean cantidadValida = false;
+                    while (!cantidadValida){
+                        System.out.println("Ingrese el valor que deseas convertir: ");
+                        try {
+                            cantidad = teclado.nextDouble();
+                            //salir del bucle
+                            cantidadValida = true;
+                        }catch (InputMismatchException e){
+                            System.out.println("Debe ingresar solo Numeros enteros o decimales. ");
+                            teclado.next();
+                        }
+
+                    }
 
 
-            try {
-
-                ConversorMonedas conversion = ReselectionOption.reselectionMoaned(opcion);
-                String monedaOrigen = conversion.getMonedaOrigen();
-                String monedaDestino = conversion.getMonedaDestino();
-
-                System.out.println("Ingrese el valor que deseas convertir: ");
-                cantidad = teclado.nextDouble();
-
-                conversion = interactuaConApi.ObtenerConversorMonedas(monedaOrigen, monedaDestino, cantidad);
-
-                conversion.setCantidad(cantidad);
 
 
-                System.out.println(" ");
-
-                convertiendomonedas.add(conversion);
-
-
-                GeneradorDeArchivo generadorDeArchivo = new GeneradorDeArchivo();
-                generadorDeArchivo.guardarJson(conversion);
-
+                    conversion = interactuaConApi.ObtenerConversorMonedas(monedaOrigen, monedaDestino, cantidad);
+                    conversion.setCantidad(cantidad);
+                    System.out.println(" ");
+                    convertiendomonedas.add(conversion);
 
 //                System.out.println("Escriba el numero de la opcion deseada: ");
-            } catch (ErrorEnConversionMonedasExeption e) {
-                System.out.println("No se puede convertir moneda  Por que Esta vacio o tiene un N/A");
-            } catch (IllegalAccessException e) {
+                } catch (ErrorEnConversionMonedasExeption e) {
+                    System.out.println("No se puede convertir moneda  Por que Esta vacio o tiene un N/A");
+                } catch (IllegalAccessException e) {
 //                System.out.println("Elija una opcion valida");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                }
             }
-
-
         }
+                    GeneradorDeArchivo generadorDeArchivo = new GeneradorDeArchivo();
+        try {
+            generadorDeArchivo.guardarJson(convertiendomonedas);
+            System.out.println("Se guardo el archivo JSON con las conversiones");
+        }catch (IOException e){
+            System.out.println("Error al guardar el archivo JSON.");
+        }
+
+
+
 
 
     }
 
-
     public static class ReselectionOption {
         public static ConversorMonedas reselectionMoaned(int option) throws IllegalAccessException {
-
             return switch (option) {
                 case 1 -> new ConversorMonedas("USD", "ARS");
                 case 2 -> new ConversorMonedas("ARS", "USD");
