@@ -38,19 +38,14 @@ public class InteractuaConApi {
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
             String json = response.body();
-//   System.out.println("este: "+json);
+//            System.out.println("Este ok "+json);
 
             ConversorMonedasExchange conversorMonedasExchange = gson.fromJson(json, ConversorMonedasExchange.class);
-//   System.out.println(conversorMonedasExchange);
-
             ConversorMonedas conversorMonedas = new ConversorMonedas(conversorMonedasExchange);
             System.out.println("El valor de  " + cantidad + " " + conversorMonedas);
 
             conversorMonedasList.add(conversorMonedas);
-
             return conversorMonedas;
-
-//   return new Gson().fromJson(response.body(), ConversorMonedas.class);
 
         } catch (Exception e) {
             throw new RuntimeException("No se encontro Conversor de Moneda de ese tipo.");

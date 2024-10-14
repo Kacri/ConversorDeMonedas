@@ -16,6 +16,14 @@ double valorFinal;
 
     }
 
+     public double getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(double cantidad) {
+        this.cantidad = cantidad;
+    }
+
     public String getMonedaOrigen() {
         return monedaOrigen;
     }
@@ -29,6 +37,10 @@ double valorFinal;
         this.monedaDestino = conversorMonedasExchange.target_code();
         this.tasaDeCambio = conversorMonedasExchange.conversion_rate();
         this.valorFinal = conversorMonedasExchange.conversion_result();
+
+
+
+
 
         // Validar base_code (moneda de origen)
         if (monedaOrigen == null || monedaOrigen.isEmpty() || monedaOrigen.equals("N/A")) {

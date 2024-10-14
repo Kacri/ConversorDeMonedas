@@ -1,38 +1,40 @@
 package Principal;
 
+import Controller.GeneradorDeArchivo;
 import Excepcion.ErrorEnConversionMonedasExeption;
 import Modelos.ConversorMonedas;
-import Modelos.ConversorMonedasExchange;
 import Servicio.InteractuaConApi;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Principal {
-
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
         InteractuaConApi interactuaConApi = new InteractuaConApi();
         double cantidad = 0;
+
+        List<ConversorMonedas> convertiendomonedas = new ArrayList<>();
+
 
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
                 .setPrettyPrinting()
                 .create();
 
-
 //        System.out.println("Ingresar valor a convertir");
-
-        System.out.println("Bienvenido al Conversor de Monedas");
-        System.out.println("----------------------------------");
+        System.out.println("*******************************************");
+        System.out.println("     Bienvenido al Conversor de Monedas    ");
+        System.out.println("*******************************************");
 
         String menuOpciones = """
-                ** Elija una opcion valida **
-                *****************************
-                        
+                         ** Menu Conversor de Monedas **
+                -----------------------------------------------                       
                 1) Dólar Estadounidense =>> Peso argentino
                 2) Peso Argentino =>> Dólar Estadounidense
                 3) Boliviano Boliviano =>> Dólar Estadounidense
@@ -43,54 +45,57 @@ public class Principal {
                 8) Dólar Estadounidense  =>> Peso Chileno
                 9) Peso Colombiano  =>> Dólar
                 10) Dólar Estadounidense  =>> Peso Colombiano
-                11) Peso Colombiano  =>> Dólar
+                11) Sol Peruano =>> Dólar
                 12) Salir
                 """;
-        System.out.println(menuOpciones);
-        System.out.println("Escriba el numero de la opcion deseada: ");
-        System.out.println("*************************************************");
+
 
         int opcion = 0;
 
         while (opcion != 12) {
-            opcion = teclado.nextInt();
-            System.out.println(opcion);
-            System.out.println("*****************************************************");
+
             System.out.println(menuOpciones);
-            System.out.println("*****************************************************");
+            System.out.println("Escriba el numero de la opcion deseada: ");
+            System.out.println("-------------------------------------------");
+            opcion = teclado.nextInt();
 
-            System.out.println("Ingrese el valor que deseas convertir: ");
-            cantidad = teclado.nextDouble();
-
-            if (opcion==12){
+            if (opcion == 12) {
                 System.out.println("Saliendo del programa...");
-                break;
             }
+
 
             try {
 
-                ConversorMonedas conversion = SeleccionarOpcion.seleccionarMoneda(opcion);
+                ConversorMonedas conversion = ReselectionOption.reselectionMoaned(opcion);
                 String monedaOrigen = conversion.getMonedaOrigen();
                 String monedaDestino = conversion.getMonedaDestino();
 
-                ConversorMonedas conversorMonedas = interactuaConApi.ObtenerConversorMonedas(monedaOrigen, monedaDestino, cantidad);
+                System.out.println("Ingrese el valor que deseas convertir: ");
+                cantidad = teclado.nextDouble();
+
+                conversion = interactuaConApi.ObtenerConversorMonedas(monedaOrigen, monedaDestino, cantidad);
+
+                conversion.setCantidad(cantidad);
+
 
                 System.out.println(" ");
 
-                System.out.println("Escriba el numero de la opcion deseada: ");
-
-//    System.out.println("Resultado: "+conversorMonedas);
-//    switch (opcion){
-//        case 1:
-//            ConversorMonedas conversorMonedas = interactuaConApi.ObtenerConversorMonedas("USD","ARS",cantidad);
-//    }
+                convertiendomonedas.add(conversion);
 
 
+                GeneradorDeArchivo generadorDeArchivo = new GeneradorDeArchivo();
+                generadorDeArchivo.guardarJson(conversion);
+
+
+//                System.out.println("Escriba el numero de la opcion deseada: ");
             } catch (ErrorEnConversionMonedasExeption e) {
                 System.out.println("No se puede convertir moneda  Por que Esta vacio o tiene un N/A");
             } catch (IllegalAccessException e) {
+//                System.out.println("Elija una opcion valida");
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+
 
         }
 
@@ -98,34 +103,23 @@ public class Principal {
     }
 
 
-    public class SeleccionarOpcion {
-        public static ConversorMonedas seleccionarMoneda(int opcion) throws IllegalAccessException {
+    public static class ReselectionOption {
+        public static ConversorMonedas reselectionMoaned(int option) throws IllegalAccessException {
 
-            switch (opcion) {
-                case 1:
-                    return new ConversorMonedas("USD", "ARS");
-                case 2:
-                    return new ConversorMonedas("ARS", "USD");
-                case 3:
-                    return new ConversorMonedas("BOB", "USD");
-                case 4:
-                    return new ConversorMonedas("USD", "BOB");
-                case 5:
-                    return new ConversorMonedas("BRL", "USD");
-                case 6:
-                    return new ConversorMonedas("USD", "BRL");
-                case 7:
-                    return new ConversorMonedas("CLP", "USD");
-                case 8:
-                    return new ConversorMonedas("USD", "CLP");
-                case 9:
-                    return new ConversorMonedas("COP", "USD");
-                case 10:
-                    return new ConversorMonedas("USD", "COP");
-                default:
-                    throw new IllegalAccessException("Opcion no valida");
-
-            }
+            return switch (option) {
+                case 1 -> new ConversorMonedas("USD", "ARS");
+                case 2 -> new ConversorMonedas("ARS", "USD");
+                case 3 -> new ConversorMonedas("BOB", "USD");
+                case 4 -> new ConversorMonedas("USD", "BOB");
+                case 5 -> new ConversorMonedas("BRL", "USD");
+                case 6 -> new ConversorMonedas("USD", "BRL");
+                case 7 -> new ConversorMonedas("CLP", "USD");
+                case 8 -> new ConversorMonedas("USD", "CLP");
+                case 9 -> new ConversorMonedas("COP", "USD");
+                case 10 -> new ConversorMonedas("USD", "COP");
+                case 11 -> new ConversorMonedas("PEN", "USD");
+                default -> throw new IllegalAccessException("Opcion no valida");
+            };
 
         }
 
