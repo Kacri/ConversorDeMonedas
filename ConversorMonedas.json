@@ -1,0 +1,16 @@
+[
+  {
+    "monedaOrigen": "ARS",
+    "monedaDestino": "USD",
+    "cantidad": 455.0,
+    "tasaDeCambio": 0.001021,
+    "valorFinal": 0.464555
+  },
+  {
+    "monedaOrigen": "CLP",
+    "monedaDestino": "USD",
+    "cantidad": 4.5,
+    "tasaDeCambio": 0.001077,
+    "valorFinal": 0.0048465
+  }
+]
