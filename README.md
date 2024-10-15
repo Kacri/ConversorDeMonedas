@@ -4,9 +4,10 @@
 Este proyecto es una aplicación de consola en Java que permite convertir montos de una moneda a otra utilizando la tasa de cambio actual obtenida de una API externa.
 El usuario puede seleccionar las monedas a convertir y la cantidad, y el sistema devolverá el valor convertido.
 <h2>CARACTERISTICAS</h2>
-•	Soporte para múltiples monedas - Consulta de tasas de cambio actualizadas desde una API externa.
-•	Manejo de errores en caso de tasas de cambio no disponibles o datos inválidos 
-•	Interfaz de usuario sencilla mediante consola
+
+•	Soporte para múltiples monedas - Consulta de tasas de cambio actualizadas desde una API externa. <br>
+•	Manejo de errores en caso de tasas de cambio no disponibles o datos inválidos <br>
+•	Interfaz de usuario sencilla mediante consola<br>
 <h2>REQUISITOS</h2>
 Para poder ejecutar este proyecto, necesitas tener instalados los siguientes programas y librerías:
 Java 11 o superior
