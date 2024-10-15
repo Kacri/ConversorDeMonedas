@@ -9,10 +9,10 @@ El usuario puede seleccionar las monedas a convertir y la cantidad, y el sistema
 •	Manejo de errores en caso de tasas de cambio no disponibles o datos inválidos <br>
 •	Interfaz de usuario sencilla mediante consola<br>
 <h2>REQUISITOS</h2>
-Para poder ejecutar este proyecto, necesitas tener instalados los siguientes programas y librerías:
-Java 11 o superior
-Gson Librería para convertir objetos JSON en Java 
-HttpClient: Incluido en Java 11 para realizar solicitudes HTTP
+Para poder ejecutar este proyecto, necesitas tener instalados los siguientes programas y librerías:<br>
+Java 11 o superior<br>
+Gson Librería para convertir objetos JSON en Java <br>
+HttpClient: Incluido en Java 11 para realizar solicitudes HTTP<br>
 
 <h2>API UTILIZADA</h2>
 Este proyecto utiliza la API de Exchange Rate API para obtener tasas de cambio de divisas actualizadas. Asegúrate de contar con una clave de API válida. Las tasas de cambio se almacenan temporalmente para minimizar consultas repetidas.
